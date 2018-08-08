@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 .single-post-page
   padding: 30px
   text-align: center
