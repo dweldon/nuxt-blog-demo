@@ -7,4 +7,11 @@ module.exports = {
     'no-console': 'warn',
     'no-restricted-syntax': 'off',
   },
+  settings: {
+    'import/resolver': {
+      nuxt: {
+        extensions: ['.js', '.vue'],
+      },
+    },
+  },
 };
