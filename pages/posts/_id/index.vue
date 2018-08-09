@@ -1,12 +1,12 @@
 <template>
   <div class="single-post-page">
     <section class="post">
-      <h1 class="post-title">Title of the Post</h1>
+      <h1 class="post-title">{{ loadedPost.title }}</h1>
       <div class="post-details">
-        <div class="post-detail">Last updated on XXX</div>
-        <div class="post-detail">Written by NAME</div>
+        <div class="post-detail">Last updated on {{ loadedPost.updatedDate }}</div>
+        <div class="post-detail">Written by {{ loadedPost.author }}</div>
       </div>
-      <p class="post-content">Content of the post</p>
+      <p class="post-content">{{ loadedPost.content }}</p>
     </section>
     <section class="post-feedback">
       <p>
@@ -16,6 +16,26 @@
     </section>
   </div>
 </template>
+
+<script>
+export default {
+  asyncData(context, callback) {
+    setTimeout(() => {
+      callback(null, {
+        loadedPost: {
+          id: '1',
+          author: 'David Weldon',
+          title: `What is your puppy thinking about? (ID: ${context.params.id})`,
+          isAdmin: 'isAdmin',
+          content: 'Your canine companion slumbers by your side, but is she dreaming of you?',
+          updatedDate: new Date(),
+          thumbnailUrl: 'https://images.pexels.com/photos/39317/chihuahua-dog-puppy-cute-39317.jpeg',
+        },
+      });
+    }, 1000);
+  },
+};
+</script>
 
 <style lang="stylus" scoped>
 .single-post-page
