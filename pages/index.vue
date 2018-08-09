@@ -10,27 +10,12 @@
 <script>
 import PostList from '~/components/Posts/PostList';
 
-const snooze = ms => new Promise(resolve => setTimeout(resolve, ms));
-
 export default {
   components: { PostList },
-  async asyncData() {
-    await snooze(1500);
-    return {
-      loadedPosts: [{
-        id: '1',
-        title: 'Is JS really eating the world?',
-        isAdmin: 'isAdmin',
-        previewText: "Some people say the JS is eating the world, but I don't think so...",
-        thumbnailUrl: 'https://techcrunch.com/wp-content/uploads/2015/04/codecode.jpg?w=730&crop=1',
-      }, {
-        id: '2',
-        title: 'Circuit boards are a silent killer',
-        isAdmin: 'isAdmin',
-        previewText: 'These things are everywhere, and they are mutating your brain waves...',
-        thumbnailUrl: 'https://previews.123rf.com/images/handmadepictures/handmadepictures1501/handmadepictures150100939/35118263-circuit-board-with-a-lot-of-different-components-close-up-shot-.jpg',
-      }],
-    };
+  computed: {
+    loadedPosts() {
+      return this.$store.getters.loadedPosts;
+    },
   },
 };
 </script>
