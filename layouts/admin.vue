@@ -9,5 +9,5 @@ html
   font-family: 'Open Sans', sans-serif
 
 body
-  margin: 0
+  margin: 1px 0 0
 </style>
