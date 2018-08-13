@@ -14,10 +14,12 @@ export default {
   layout: 'admin',
   components: { AdminPostForm },
   methods: {
-    async onSubmit(postData) {
+    onSubmit(postData) {
       const url = 'https://nuxt-blog-e5b96.firebaseio.com/posts.json';
-      const result = await axios.post(url, postData);
-      console.log(result);
+      axios.post(url, {
+        ...postData,
+        updatedDate: new Date(),
+      });
     },
   },
 };

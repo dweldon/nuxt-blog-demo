@@ -18,21 +18,14 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
-  asyncData(context, callback) {
-    setTimeout(() => {
-      callback(null, {
-        loadedPost: {
-          id: '1',
-          author: 'David Weldon',
-          title: `What is your puppy thinking about? (ID: ${context.params.id})`,
-          isAdmin: 'isAdmin',
-          content: 'Your canine companion slumbers by your side, but is she dreaming of you?',
-          updatedDate: new Date(),
-          thumbnailUrl: 'https://images.pexels.com/photos/39317/chihuahua-dog-puppy-cute-39317.jpeg',
-        },
-      });
-    }, 1000);
+  async asyncData(context) {
+    const { id } = context.params;
+    const url = `https://nuxt-blog-e5b96.firebaseio.com/posts/${id}.json`;
+    const res = await axios.get(url);
+    return { loadedPost: res.data };
   },
 };
 </script>
