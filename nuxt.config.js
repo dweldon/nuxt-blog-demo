@@ -11,4 +11,11 @@ module.exports = {
       },
     ],
   },
+  css: [
+    '~/assets/styles/main.css',
+  ],
+  transition: {
+    name: 'fade',
+    mode: 'out-in',
+  },
 };
