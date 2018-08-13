@@ -11,6 +11,11 @@
       control-type="textarea"
     >Content</AppControlInput>
 
+    <AppControlInput
+      v-model="post.previewText"
+      control-type="textarea"
+    >Preview Text</AppControlInput>
+
     <AppButton type="submit">Save</AppButton>
 
     <AppButton
@@ -36,6 +41,7 @@ export default {
         title: '',
         author: '',
         content: '',
+        previewText: '',
         thumbnailUrl: '',
       }),
     },

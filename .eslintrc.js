@@ -5,6 +5,7 @@ module.exports = {
   ],
   rules: {
     'no-console': 'warn',
+    'require-await': 'error',
     'no-restricted-syntax': 'off',
   },
   settings: {
