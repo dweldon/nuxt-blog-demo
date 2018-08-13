@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import AdminPostForm from '~/components/Admin/AdminPostForm';
 
 export default {
@@ -15,11 +14,7 @@ export default {
   components: { AdminPostForm },
   methods: {
     async onSubmit(postData) {
-      const url = 'https://nuxt-blog-e5b96.firebaseio.com/posts.json';
-      await axios.post(url, {
-        ...postData,
-        updatedDate: new Date(),
-      });
+      await this.$store.dispatch('addPost', postData);
       this.$router.push('/admin');
     },
   },

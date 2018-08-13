@@ -20,16 +20,11 @@ export default {
     const { postId } = context.params;
     const url = `https://nuxt-blog-e5b96.firebaseio.com/posts/${postId}.json`;
     const res = await axios.get(url);
-    return { loadedPost: res.data };
+    return { loadedPost: { ...res.data, id: context.params.postId } };
   },
   methods: {
     async onSubmit(postData) {
-      const { postId } = this.$route.params;
-      const url = `https://nuxt-blog-e5b96.firebaseio.com/posts/${postId}.json`;
-      await axios.put(url, {
-        ...postData,
-        updatedDate: new Date(),
-      });
+      await this.$store.dispatch('editPost', postData);
       this.$router.push('/admin');
     },
   },
