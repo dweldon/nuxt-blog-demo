@@ -14,12 +14,13 @@ export default {
   layout: 'admin',
   components: { AdminPostForm },
   methods: {
-    onSubmit(postData) {
+    async onSubmit(postData) {
       const url = 'https://nuxt-blog-e5b96.firebaseio.com/posts.json';
-      axios.post(url, {
+      await axios.post(url, {
         ...postData,
         updatedDate: new Date(),
       });
+      this.$router.push('/admin');
     },
   },
 };
