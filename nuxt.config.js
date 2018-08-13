@@ -15,6 +15,7 @@ module.exports = {
     '~/assets/styles/main.css',
   ],
   plugins: [
+    '~/plugins/date-filter.js',
     '~/plugins/core-components.js',
   ],
   transition: {
