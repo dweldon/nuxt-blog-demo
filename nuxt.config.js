@@ -14,6 +14,9 @@ module.exports = {
   css: [
     '~/assets/styles/main.css',
   ],
+  plugins: [
+    '~/plugins/core-components.js',
+  ],
   transition: {
     name: 'fade',
     mode: 'out-in',
