@@ -7,20 +7,17 @@
 </template>
 
 <script>
+import axios from 'axios';
 import AdminPostForm from '~/components/Admin/AdminPostForm';
 
 export default {
   layout: 'admin',
   components: { AdminPostForm },
-  data() {
-    return {
-      loadedPost: {
-        title: 'Is JS really eating the world?',
-        author: 'David Weldon',
-        content: "Some people say the JS is eating the world, but I don't think so...",
-        thumbnailUrl: 'https://techcrunch.com/wp-content/uploads/2015/04/codecode.jpg?w=730&crop=1',
-      },
-    };
+  async asyncData(context) {
+    const { postId } = context.params;
+    const url = `https://nuxt-blog-e5b96.firebaseio.com/posts/${postId}.json`;
+    const res = await axios.get(url);
+    return { loadedPost: res.data };
   },
 };
 </script>
