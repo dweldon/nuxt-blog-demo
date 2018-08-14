@@ -51,7 +51,7 @@ const createStore = () => new Vuex.Store({
       await this.$axios.$put(url, updatedPost);
       commit('editPost', updatedPost);
     },
-    async authenticateUser({ commit, dispatch }, authData) {
+    async authenticateUser({ commit }, authData) {
       const { firebaseKey } = process.env;
       const url = authData.isLogin
         ? `${AUTH_URL}/verifyPassword?key=${firebaseKey}`
@@ -70,14 +70,8 @@ const createStore = () => new Vuex.Store({
       localStorage.setItem('tokenExpiresAt', expiresAt);
       Cookie.set('token', idToken);
       Cookie.set('tokenExpiresAt', expiresAt);
-      dispatch('setLogoutTimer', expires);
     },
-    setLogoutTimer({ commit }, duration) {
-      setTimeout(() => {
-        commit('clearToken');
-      }, duration);
-    },
-    initAuth({ commit, dispatch }, req) {
+    initAuth({ commit }, req) {
       let token;
       let expiresAt;
 
@@ -91,11 +85,12 @@ const createStore = () => new Vuex.Store({
         expiresAt = Number(localStorage.getItem('tokenExpiresAt'));
       }
 
-      const expires = expiresAt - new Date().getTime();
-      if (!token || new Date().getTime() > expiresAt) return;
+      if (!token || new Date().getTime() > expiresAt) {
+        commit('clearToken');
+        return;
+      }
 
       commit('setToken', token);
-      dispatch('setLogoutTimer', expires);
     },
   },
   getters: {
