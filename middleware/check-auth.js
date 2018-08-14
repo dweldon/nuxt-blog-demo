@@ -1,5 +1,3 @@
-const checkAuth = ({ store }) => {
-  if (process.client) store.dispatch('initAuth');
-};
+const checkAuth = ({ req, store }) => store.dispatch('initAuth', req);
 
 export default checkAuth;

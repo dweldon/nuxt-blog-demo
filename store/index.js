@@ -1,6 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies, no-param-reassign */
 import _ from 'lodash';
 import Vuex from 'vuex';
+import Cookie from 'js-cookie';
+import { parse } from 'cookie';
 
 const AUTH_URL = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty';
 
@@ -66,6 +68,8 @@ const createStore = () => new Vuex.Store({
       commit('setToken', idToken);
       localStorage.setItem('token', idToken);
       localStorage.setItem('tokenExpiresAt', expiresAt);
+      Cookie.set('token', idToken);
+      Cookie.set('tokenExpiresAt', expiresAt);
       dispatch('setLogoutTimer', expires);
     },
     setLogoutTimer({ commit }, duration) {
@@ -73,12 +77,23 @@ const createStore = () => new Vuex.Store({
         commit('clearToken');
       }, duration);
     },
-    initAuth({ commit, dispatch }) {
-      const token = localStorage.getItem('token');
-      const expiresAt = Number(localStorage.getItem('tokenExpiresAt'));
-      const expires = expiresAt - new Date().getTime();
+    initAuth({ commit, dispatch }, req) {
+      let token;
+      let expiresAt;
 
+      if (req) {
+        if (!req.headers.cookie) return;
+        const values = parse(req.headers.cookie);
+        ({ token } = values);
+        expiresAt = Number(values.tokenExpiresAt || 0);
+      } else {
+        token = localStorage.getItem('token');
+        expiresAt = Number(localStorage.getItem('tokenExpiresAt'));
+      }
+
+      const expires = expiresAt - new Date().getTime();
       if (!token || new Date().getTime() > expiresAt) return;
+
       commit('setToken', token);
       dispatch('setLogoutTimer', expires);
     },
