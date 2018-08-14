@@ -2,8 +2,11 @@
 import _ from 'lodash';
 import Vuex from 'vuex';
 
+const AUTH_URL = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty';
+
 const createStore = () => new Vuex.Store({
   state: {
+    token: null,
     loadedPosts: [],
   },
   mutations: {
@@ -16,6 +19,9 @@ const createStore = () => new Vuex.Store({
     editPost(state, editedPost) {
       const index = _.findIndex(state.loadedPosts, { id: editedPost.id });
       state.loadedPosts.splice(index, 1, editedPost);
+    },
+    setToken(state, token) {
+      state.token = token;
     },
   },
   actions: {
@@ -37,6 +43,19 @@ const createStore = () => new Vuex.Store({
       const { id } = updatedPost;
       await this.$axios.$put(`/posts/${id}.json`, updatedPost);
       commit('editPost', updatedPost);
+    },
+    async authenticateUser({ commit }, authData) {
+      const { firebaseKey } = process.env;
+      const url = authData.isLogin
+        ? `${AUTH_URL}/verifyPassword?key=${firebaseKey}`
+        : `${AUTH_URL}/signupNewUser?key=${firebaseKey}`;
+
+      const { idToken } = await this.$axios.$post(url, {
+        email: authData.email,
+        password: authData.password,
+        returnSecureToken: true,
+      });
+      commit('setToken', idToken);
     },
   },
   getters: {
