@@ -70,6 +70,9 @@ const createStore = () => new Vuex.Store({
       localStorage.setItem('tokenExpiresAt', expiresAt);
       Cookie.set('token', idToken);
       Cookie.set('tokenExpiresAt', expiresAt);
+      return this.$axios.$post('http://localhost:3000/api/track-data', {
+        data: 'authenticated',
+      });
     },
     initAuth({ commit, dispatch }, req) {
       let token;

@@ -1,3 +1,5 @@
+const bodyParser = require('body-parser');
+
 module.exports = {
   head: {
     meta: [
@@ -34,4 +36,8 @@ module.exports = {
   env: {
     firebaseKey: 'AIzaSyC8zfvzrFR5THd2OMNzZb2byx2yBk0yKEE',
   },
+  serverMiddleware: [
+    bodyParser.json(),
+    '~/api',
+  ],
 };
