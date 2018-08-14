@@ -23,6 +23,8 @@
 </template>
 
 <script>
+const BASE_URL = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty';
+
 export default {
   name: 'AdminAuthPage',
   layout: 'admin',
@@ -36,8 +38,10 @@ export default {
   methods: {
     async onSubmit() {
       const { firebaseKey } = process.env;
-      const baseUrl = 'https://www.googleapis.com/identitytoolkit';
-      const url = `${baseUrl}/v3/relyingparty/signupNewUser?key=${firebaseKey}`;
+      const url = this.isLogin
+        ? `${BASE_URL}/verifyPassword?key=${firebaseKey}`
+        : `${BASE_URL}/signupNewUser?key=${firebaseKey}`;
+
       const result = await this.$axios.$post(url, {
         email: this.email,
         password: this.password,
