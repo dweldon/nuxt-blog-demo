@@ -64,6 +64,9 @@ const createStore = () => new Vuex.Store({
     loadedPosts(state) {
       return state.loadedPosts;
     },
+    isAuthenticated(state) {
+      return !_.isEmpty(state.token);
+    },
   },
 });
 
