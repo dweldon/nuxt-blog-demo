@@ -31,4 +31,7 @@ module.exports = {
     name: 'fade',
     mode: 'out-in',
   },
+  env: {
+    firebaseKey: 'AIzaSyC8zfvzrFR5THd2OMNzZb2byx2yBk0yKEE',
+  },
 };
