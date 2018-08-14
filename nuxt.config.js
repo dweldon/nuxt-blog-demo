@@ -14,6 +14,12 @@ module.exports = {
   css: [
     '~/assets/styles/main.css',
   ],
+  modules: [
+    '@nuxtjs/axios',
+  ],
+  axios: {
+    baseURL: 'https://nuxt-blog-e5b96.firebaseio.com',
+  },
   plugins: [
     '~/plugins/date-filter.js',
     '~/plugins/core-components.js',
