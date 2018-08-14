@@ -60,13 +60,27 @@ const createStore = () => new Vuex.Store({
         password: authData.password,
         returnSecureToken: true,
       });
+      const expires = expiresIn * 1000;
+      const expiresAt = new Date().getTime() + expires;
+
       commit('setToken', idToken);
-      dispatch('setLogoutTimer', expiresIn * 1000);
+      localStorage.setItem('token', idToken);
+      localStorage.setItem('tokenExpiresAt', expiresAt);
+      dispatch('setLogoutTimer', expires);
     },
     setLogoutTimer({ commit }, duration) {
       setTimeout(() => {
         commit('clearToken');
       }, duration);
+    },
+    initAuth({ commit, dispatch }) {
+      const token = localStorage.getItem('token');
+      const expiresAt = Number(localStorage.getItem('tokenExpiresAt'));
+      const expires = expiresAt - new Date().getTime();
+
+      if (!token || new Date().getTime() > expiresAt) return;
+      commit('setToken', token);
+      dispatch('setLogoutTimer', expires);
     },
   },
   getters: {
