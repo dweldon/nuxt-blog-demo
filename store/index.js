@@ -71,7 +71,7 @@ const createStore = () => new Vuex.Store({
       Cookie.set('token', idToken);
       Cookie.set('tokenExpiresAt', expiresAt);
     },
-    initAuth({ commit }, req) {
+    initAuth({ commit, dispatch }, req) {
       let token;
       let expiresAt;
 
@@ -86,11 +86,21 @@ const createStore = () => new Vuex.Store({
       }
 
       if (!token || new Date().getTime() > expiresAt) {
-        commit('clearToken');
+        dispatch('logout');
         return;
       }
 
       commit('setToken', token);
+    },
+    logout({ commit }) {
+      commit('clearToken');
+      Cookie.remove('token');
+      Cookie.remove('tokenExpiresAt');
+
+      if (process.client) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('tokenExpiresAt');
+      }
     },
   },
   getters: {
