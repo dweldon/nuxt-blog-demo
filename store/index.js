@@ -33,15 +33,17 @@ const createStore = () => new Vuex.Store({
     setPosts(vuexContext, posts) {
       vuexContext.commit('setPosts', posts);
     },
-    async addPost({ commit }, post) {
+    async addPost({ state, commit }, post) {
       const createdPost = { ...post, updatedDate: new Date() };
-      const data = await this.$axios.$post('/posts.json', createdPost);
+      const url = `/posts.json?auth=${state.token}`;
+      const data = await this.$axios.$post(url, createdPost);
       commit('addPost', { id: data.name, ...createdPost });
     },
-    async editPost({ commit }, editedPost) {
+    async editPost({ state, commit }, editedPost) {
       const updatedPost = { ...editedPost, updatedDate: new Date() };
       const { id } = updatedPost;
-      await this.$axios.$put(`/posts/${id}.json`, updatedPost);
+      const url = `/posts/${id}.json?auth=${state.token}`;
+      await this.$axios.$put(url, updatedPost);
       commit('editPost', updatedPost);
     },
     async authenticateUser({ commit }, authData) {
