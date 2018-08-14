@@ -20,6 +20,9 @@ module.exports = {
   axios: {
     baseURL: 'https://nuxt-blog-e5b96.firebaseio.com',
   },
+  router: {
+    middleware: 'log',
+  },
   plugins: [
     '~/plugins/date-filter.js',
     '~/plugins/core-components.js',
