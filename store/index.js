@@ -23,6 +23,9 @@ const createStore = () => new Vuex.Store({
     setToken(state, token) {
       state.token = token;
     },
+    clearToken(state) {
+      state.token = null;
+    },
   },
   actions: {
     async nuxtServerInit({ commit }, { app }) {
@@ -46,18 +49,24 @@ const createStore = () => new Vuex.Store({
       await this.$axios.$put(url, updatedPost);
       commit('editPost', updatedPost);
     },
-    async authenticateUser({ commit }, authData) {
+    async authenticateUser({ commit, dispatch }, authData) {
       const { firebaseKey } = process.env;
       const url = authData.isLogin
         ? `${AUTH_URL}/verifyPassword?key=${firebaseKey}`
         : `${AUTH_URL}/signupNewUser?key=${firebaseKey}`;
 
-      const { idToken } = await this.$axios.$post(url, {
+      const { idToken, expiresIn } = await this.$axios.$post(url, {
         email: authData.email,
         password: authData.password,
         returnSecureToken: true,
       });
       commit('setToken', idToken);
+      dispatch('setLogoutTimer', expiresIn * 1000);
+    },
+    setLogoutTimer({ commit }, duration) {
+      setTimeout(() => {
+        commit('clearToken');
+      }, duration);
     },
   },
   getters: {
